@@ -2,6 +2,7 @@ package com.gm.wj.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
 import java.util.List;
@@ -25,6 +26,10 @@ public class AdminRole {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+
+    @OneToOne
+    @JoinColumn(name = "orgid")
+    private Organization organization;
 
     /**
      * Role name.
@@ -102,4 +107,13 @@ public class AdminRole {
     public void setMenus(List<AdminMenu> menus) {
         this.menus = menus;
     }
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
 }

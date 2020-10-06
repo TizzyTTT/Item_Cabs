@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Entity
 @JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
-@Table ( name ="register")
+@Table ( name ="chemicalsregister")
 public class Register  implements Serializable {
 
 	private static final long serialVersionUID =  8161732968165455588L;

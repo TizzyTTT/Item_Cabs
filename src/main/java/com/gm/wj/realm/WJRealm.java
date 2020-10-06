@@ -13,6 +13,8 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -38,6 +40,12 @@ public class WJRealm extends AuthorizingRealm {
         // 将权限放入授权信息中
         SimpleAuthorizationInfo s = new SimpleAuthorizationInfo();
         s.setStringPermissions(permissions);
+
+//        System.out.println("all the perms");
+//        Iterator it = permissions.iterator();
+//        while (it.hasNext()) {
+//            System.out.println("permission ："+it.next());
+//        }
         return s;
     }
 

@@ -1,4 +1,4 @@
-package com.gm.wj.controller;
+package com.gm.wj.New_All.controller;
 
 import com.gm.wj.entity.User;
 import com.gm.wj.result.Result;
@@ -10,10 +10,11 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.HtmlUtils;
-
-import javax.validation.Valid;
 
 /**
  * Login and register controller.
@@ -42,6 +43,8 @@ public class LoginController {
             if (!user.isEnabled()) {
                 return ResultFactory.buildFailResult("该用户已被禁用");
             }
+//            String t_name = SecurityUtils.getSubject().getPrincipal().toString();
+//            Organization org = userService.findByUsername(t_name).getOrganization();
             return ResultFactory.buildSuccessResult(username);
         } catch (IncorrectCredentialsException e) {
             return ResultFactory.buildFailResult("密码错误");

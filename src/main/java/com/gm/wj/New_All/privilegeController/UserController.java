@@ -1,11 +1,15 @@
-package com.gm.wj.controller;
+package com.gm.wj.New_All.privilegeController;
 
-import com.gm.wj.entity.*;
+import com.gm.wj.entity.User;
 import com.gm.wj.result.Result;
 import com.gm.wj.result.ResultFactory;
-import com.gm.wj.service.*;
+import com.gm.wj.service.AdminUserRoleService;
+import com.gm.wj.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -27,7 +31,6 @@ public class UserController {
     public Result listUsers() {
         return ResultFactory.buildSuccessResult(userService.list());
     }
-
 
     @PutMapping("/api/admin/user/status")
     public Result updateUserStatus(@RequestBody @Valid User requestUser) {

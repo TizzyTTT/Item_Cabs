@@ -1,4 +1,4 @@
-package com.gm.wj.New_All.dao;
+package com.gm.wj.New_All.dao.chemcials;
 
 import com.gm.wj.New_All.entity.Chemicalcategory;
 import com.gm.wj.New_All.entity.Chemicals;
@@ -21,5 +21,6 @@ public interface ChemicalsDAO extends JpaRepository<Chemicals,Integer> {
     List<Chemicals> findAllByChemicalcategoryAndChemicalnameLikeOrChemicalnoLike(Chemicalcategory chemicalcategory,String keyword1, String keyword2);
 
     List<Chemicals> findAllByChemicalcategory(Chemicalcategory chemicalcategory);
+
 
 }

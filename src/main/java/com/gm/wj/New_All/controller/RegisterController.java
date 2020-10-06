@@ -6,8 +6,12 @@ import com.gm.wj.New_All.entity.Register;
 import com.gm.wj.New_All.service.ChemicalBasicService;
 import com.gm.wj.New_All.service.ChemicalcategoryService;
 import com.gm.wj.New_All.service.RegisterService;
+import com.gm.wj.New_All.utils.Chem;
+import com.gm.wj.New_All.utils.GetFromHubRecord;
 import com.gm.wj.result.Result;
 import com.gm.wj.result.ResultFactory;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +20,7 @@ import java.util.*;
 
 
 @RestController
+@Api(tags={"与药品登记相关的接口"})
 public class RegisterController {
 
     @Autowired
@@ -28,6 +33,7 @@ public class RegisterController {
     ChemicalcategoryService chemicalcategoryService;
 
     @PutMapping("/api/admin/chemicals/addNewRegister/{chemicalid}/{totalweight}")
+    @ApiOperation(value = "添加药品登记记录")
     public Result add(@PathVariable("chemicalid") int chemicalid, @PathVariable("totalweight") double totalweight){
 
         Chemicals chemicals = chemicalBasicService.findById(chemicalid);
@@ -47,27 +53,19 @@ public class RegisterController {
     }
 
     @GetMapping("/api/admin/chemicals/listAllRegister")
+    @ApiOperation(value = "陈列所有药品登记信息")
     public Result list(){
         return ResultFactory.buildSuccessResult( registerService.List());
     }
 
     @GetMapping("/api/admin/chemicals/getSelect")
+    @ApiOperation(value = "登记前需要选择哪个药品")
     public Result getSelect(){
-//        Option option1 = new Option();
-//        option1.setValue("A");
-//        option1.setLabel("a");
-//
-//        Option option2 = new Option();
-//        option2.setValue("B");
-//        option2.setLabel("b");
-//        List<Option> list = new ArrayList<>();
-//        list.add(option1);
-//        list.add(option2);
-        System.out.println("------------------");
         return ResultFactory.buildSuccessResult(registerService.getSelect());
     }
 
     @GetMapping("api/admin/chemicals/searchRegister")
+    @ApiOperation(value = "")
     public Result search(@RequestParam("keywords") String keywords,@RequestParam("categoryid") int cid){
         //查找类别
         Chemicalcategory chemicalcategory = chemicalcategoryService.getCategoryById(cid);
@@ -89,6 +87,18 @@ public class RegisterController {
             }
             return ResultFactory.buildSuccessResult(registerService.findByChemicalsIn(list2));
         }
+    }
+
+    // 批量登记
+    @PostMapping("/api/admin/chemicals/addBatch")
+    @ApiOperation(value = "", notes = "")
+    public Result addBatch(@RequestBody GetFromHubRecord record){
+
+        for(Chem c:record.getList()){
+            System.out.println(c.toString());
+        }
+        registerService.addBatch(record.getList());
+        return ResultFactory.buildSuccessResult("添加成功");
     }
 
 }

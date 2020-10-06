@@ -1,17 +1,17 @@
 package com.gm.wj.New_All.service;
 
-import com.gm.wj.New_All.dao.ChemicalsDAO;
+import com.gm.wj.New_All.dao.chemcials.ChemicalsDAO;
 import com.gm.wj.New_All.entity.Chemicalcategory;
 import com.gm.wj.New_All.entity.Chemicals;
-import com.gm.wj.result.Result;
-import com.gm.wj.result.ResultFactory;
+import com.gm.wj.entity.Organization;
+import com.gm.wj.entity.User;
+import com.gm.wj.service.UserService;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Service
@@ -20,10 +20,21 @@ public class ChemicalBasicService {
     @Autowired
     ChemicalsDAO chemicalsDAO;
 
+    @Autowired
+    UserService userService;
+
     public List<Chemicals> listAll() {
 
         Sort sort = new Sort(Sort.Direction.DESC, "id");
-        return chemicalsDAO.findAll(sort);
+        List<Chemicals> list = chemicalsDAO.findAll(sort);
+
+        String username = SecurityUtils.getSubject().getPrincipal().toString();
+        User user = userService.findByUsername(username);
+        Organization organization = user.getOrganization();
+        list.removeIf(m->m.getChemicalcategory().getOrganization().getId() != organization.getId());
+        //丢弃不属于该组织的organization
+
+        return list;
     }
 
     public Chemicals findById(int id){
@@ -32,13 +43,13 @@ public class ChemicalBasicService {
 
     //save 方法（1）有id 修改 （2）没id 添加
     public int add(Chemicals chemicals){
-        System.out.println("enter");
+//        System.out.println("enter");
         if(chemicalsDAO.findByChemicalno(chemicals.getChemicalno()) != null){
             //存在相同编号
-            System.out.println("same");
+//            System.out.println("same");
             return -1;
         }
-        System.out.println("begin");
+//        System.out.println("begin");
         try {
             chemicalsDAO.save(chemicals);
         }catch (Exception e){
@@ -53,6 +64,7 @@ public class ChemicalBasicService {
             chemicals_indb.setChemicalno(chemicals.getChemicalno());
             chemicals_indb.setChemicalcategory(chemicals.getChemicalcategory());
             chemicals_indb.setChemicalname(chemicals.getChemicalname());
+
             chemicalsDAO.save(chemicals_indb);
         }catch (Exception e){
             return -1;
@@ -82,22 +94,37 @@ public class ChemicalBasicService {
 
     public List<Chemicals> search(Chemicalcategory chemicalcategory,String keywords){
 
-        keywords = "%"+keywords+"%";
+        List<Chemicals> list = null;
+        String username = SecurityUtils.getSubject().getPrincipal().toString();
+        User user = userService.findByUsername(username);
+        Organization organization = user.getOrganization();
 
         if(chemicalcategory == null && keywords.equals("")){
-            return chemicalsDAO.findAll();
+            list = chemicalsDAO.findAll();
         }else if(chemicalcategory != null && keywords.equals("")){
-            return chemicalsDAO.findAllByChemicalcategory(chemicalcategory);
+            list = chemicalsDAO.findAllByChemicalcategory(chemicalcategory);
         }else if(chemicalcategory == null && !keywords.equals("")){
-            return chemicalsDAO.findAllByChemicalnameLikeOrChemicalnoLike(keywords,keywords);
+            keywords = "%"+keywords+"%";
+            list = chemicalsDAO.findAllByChemicalnameLikeOrChemicalnoLike(keywords,keywords);
         }else {
-            return chemicalsDAO.findAllByChemicalcategoryAndChemicalnameLikeOrChemicalnoLike(chemicalcategory,keywords,keywords);
+            keywords = "%"+keywords+"%";
+            list = chemicalsDAO.findAllByChemicalcategoryAndChemicalnameLikeOrChemicalnoLike(chemicalcategory,keywords,keywords);
         }
-
+        list.removeIf(m -> m.getChemicalcategory().getOrganization().getId() != organization.getId());
+        return list;
     }
 
     public List<Chemicals> findByChemicalcategory(Chemicalcategory chemicalcategory){
-        return chemicalsDAO.findAllByChemicalcategory(chemicalcategory);
+
+        List<Chemicals> list = null;
+        String username = SecurityUtils.getSubject().getPrincipal().toString();
+        User user = userService.findByUsername(username);
+        Organization organization = user.getOrganization();
+
+        list = chemicalsDAO.findAllByChemicalcategory(chemicalcategory);
+        list.removeIf(m -> m.getChemicalcategory().getOrganization().getId() != organization.getId());
+        return list;
+
     }
 
 }

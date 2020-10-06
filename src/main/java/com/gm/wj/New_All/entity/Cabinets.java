@@ -3,6 +3,7 @@ package com.gm.wj.New_All.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.gm.wj.entity.Organization;
 
 /**
  * @Description
@@ -20,13 +21,17 @@ public class Cabinets  implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
    	@Column(name = "id" )
-	private int id;
+	private int id = -1;
 
    	@Column(name = "location" )
 	private String location;
 
    	@Column(name = "cabno" )
 	private String cabno;
+
+	@OneToOne
+   	@JoinColumn(name = "orgid")
+	private Organization organization;
 
 	public int getId() {
 		return this.id;
@@ -50,6 +55,14 @@ public class Cabinets  implements Serializable {
 
 	public void setCabname(String cabname) {
 		this.cabno = cabname;
+	}
+
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
 	}
 
 	@Override

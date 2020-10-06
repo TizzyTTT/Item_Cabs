@@ -1,4 +1,4 @@
-package com.gm.wj.New_All.dao;
+package com.gm.wj.New_All.dao.record;
 
 import com.gm.wj.New_All.entity.Chemicalcategory;
 import com.gm.wj.New_All.entity.Chemicals;
@@ -13,6 +13,9 @@ public interface RegisterDAO extends JpaRepository<Register,Integer> {
     Register findById(int id);
 
     List<Register> findByChemicalsIn(List<Chemicals> list);
+
+    Register findByChemicals(Chemicals c);
+
 
 
 //    List<Register> findAllByChemicalnameLikeOrChemicals()

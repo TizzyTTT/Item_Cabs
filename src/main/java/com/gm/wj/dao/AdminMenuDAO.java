@@ -1,6 +1,7 @@
 package com.gm.wj.dao;
 
 import com.gm.wj.entity.AdminMenu;
+import io.swagger.models.auth.In;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -12,5 +13,6 @@ import java.util.List;
 public interface AdminMenuDAO extends JpaRepository<AdminMenu, Integer> {
      AdminMenu findById(int id);
      List<AdminMenu> findAllByParentId(int parentId);
+     List<AdminMenu> findByIdIn(Integer [] ids);
 }
 

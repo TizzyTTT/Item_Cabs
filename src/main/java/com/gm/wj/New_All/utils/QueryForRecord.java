@@ -4,7 +4,7 @@ public class QueryForRecord {
 
     public int cid;
     public String afterTime;
-    public int operationType;
+//    public int operationType;
     public int operationUserId;
 
 
@@ -24,13 +24,13 @@ public class QueryForRecord {
         this.afterTime = afterTime;
     }
 
-    public int getOperationType() {
-        return operationType;
-    }
+//    public int getOperationType() {
+//        return operationType;
+//    }
 
-    public void setOperationType(int operationType) {
-        this.operationType = operationType;
-    }
+//    public void setOperationType(int operationType) {
+//        this.operationType = operationType;
+//    }
 
     public int getOperationUserId() {
         return operationUserId;

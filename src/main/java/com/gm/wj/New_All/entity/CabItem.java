@@ -6,17 +6,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.math.BigDecimal;
 
 /**
- * @Description  
+ * @Description
  * @Author  wwhh
- * @Date 2020-08-13 18:01:58 
+ * @Date 2020-08-13 18:01:58
  */
 
 @Entity
 @JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
 @Table ( name ="cab_item")
 public class CabItem  implements Serializable {
-
-	private static final long serialVersionUID =  7747215994846603783L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +34,7 @@ public class CabItem  implements Serializable {
 	private int loc;
 
    	@Column(name = "amount" )
-	private BigDecimal amount;
+	private double amount;
 
 	public int getId() {
 		return this.id;
@@ -52,14 +50,6 @@ public class CabItem  implements Serializable {
 
 	public void setCabid(int cabid) {
 		this.cabid = cabid;
-	}
-
-	public int getChemicalid() {
-		return this.chemicalid;
-	}
-
-	public void setChemicalid(int chemicalid) {
-		this.chemicalid = chemicalid;
 	}
 
 	public int getLevel() {
@@ -78,24 +68,19 @@ public class CabItem  implements Serializable {
 		this.loc = loc;
 	}
 
-	public BigDecimal getAmount() {
-		return this.amount;
+	public double getAmount() {
+		return amount;
 	}
 
-	public void setAmount(BigDecimal amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 
-	@Override
-	public String toString() {
-		return "{" +
-					"id='" + id + '\'' +
-					"cabid='" + cabid + '\'' +
-					"chemicalid='" + chemicalid + '\'' +
-					"level='" + level + '\'' +
-					"loc='" + loc + '\'' +
-					"amount='" + amount + '\'' +
-				'}';
+	public int getChemicalid() {
+		return chemicalid;
 	}
 
+	public void setChemicalid(int chemicalid) {
+		this.chemicalid = chemicalid;
+	}
 }

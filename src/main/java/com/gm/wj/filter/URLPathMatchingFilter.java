@@ -75,8 +75,5 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
         }
     }
 
-//    protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception{
-//        return true;
-//    }
 
 }

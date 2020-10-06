@@ -3,7 +3,9 @@ package com.gm.wj.service;
 import com.gm.wj.dao.UserDAO;
 import com.gm.wj.dto.UserDTO;
 import com.gm.wj.entity.AdminRole;
+import com.gm.wj.entity.Organization;
 import com.gm.wj.entity.User;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +27,18 @@ public class UserService {
     AdminRoleService adminRoleService;
     @Autowired
     AdminUserRoleService adminUserRoleService;
+    @Autowired
+    UserService userService;
 
     public List<UserDTO> list() {
-        List<User> users = userDAO.findAll();
 
+        String username = SecurityUtils.getSubject().getPrincipal().toString();
+        User t_user = userService.findByUsername(username);
+        Organization organization = t_user.getOrganization();
+        List<User> users = userDAO.findAllByOrganization(organization);
+
+//        List<User> users = userDAO.findAll();
+//
         // Find all roles in DB to enable JPA persistence context.
 //        List<AdminRole> allRoles = adminRoleService.findAll();
 
@@ -41,6 +51,10 @@ public class UserService {
         });
 
         return userDTOS;
+    }
+
+    public User findById(int userid){
+        return userDAO.findById(userid);
     }
 
     public boolean isExist(String username) {
@@ -90,6 +104,12 @@ public class UserService {
 
         user.setSalt(salt);
         user.setPassword(encodedPassword);
+
+        //单位信息注入
+        String current_username = SecurityUtils.getSubject().getPrincipal().toString();
+        User current_user = userService.findByUsername(current_username);
+        Organization org = current_user.getOrganization();
+        user.setOrganization(org);
 
         userDAO.save(user);
 

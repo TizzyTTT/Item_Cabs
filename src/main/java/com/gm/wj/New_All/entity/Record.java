@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gm.wj.entity.AdminPermission;
+import com.gm.wj.entity.Organization;
 import com.gm.wj.entity.User;
 
 import java.util.Date;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @Entity
 @JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
-@Table ( name ="record")
+@Table ( name ="ordinary_record")
 public class Record  implements Serializable {
 
 	@Id
@@ -25,8 +26,9 @@ public class Record  implements Serializable {
    	@Column(name = "id" )
 	private int id;
 
-   	@Column(name = "cabid" )
-	private int cabid;
+	@OneToOne
+	@JoinColumn(name = "cabid" )
+	private Cabinets cabinets;
 
 	@OneToOne
 	@JoinColumn(name = "userid")
@@ -39,6 +41,13 @@ public class Record  implements Serializable {
    	@Column(name = "time" )
 	private Date time;
 
+	@OneToOne
+	@JoinColumn(name = "orgid")
+	private Organization organization;
+
+	@Transient
+	private List<RecordDetail> recordDetails;
+
 	public List<RecordDetail> getRecordDetails() {
 		return recordDetails;
 	}
@@ -47,12 +56,6 @@ public class Record  implements Serializable {
 		this.recordDetails = recordDetails;
 	}
 
-	/**
-	 * Transient property for storing permissions owned by current role.
-	 */
-	@Transient
-	private List<RecordDetail> recordDetails;
-
 	public int getId() {
 		return this.id;
 	}
@@ -60,15 +63,6 @@ public class Record  implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public int getCabid() {
-		return this.cabid;
-	}
-
-	public void setCabid(int cabid) {
-		this.cabid = cabid;
-	}
-
 	public Date getTime() {
 		return this.time;
 	}
@@ -89,15 +83,11 @@ public class Record  implements Serializable {
 
 	public void setUser(User user) {this.user = user;}
 
-	@Override
-	public String toString() {
-		return "Record{" +
-				"id=" + id +
-				", cabid=" + cabid +
-				", user=" + user +
-				", aduser=" + aduser +
-				", time=" + time +
-				", recordDetails=" + recordDetails +
-				'}';
+	public Cabinets getCabinets() {
+		return cabinets;
+	}
+
+	public void setCabinets(Cabinets cabinets) {
+		this.cabinets = cabinets;
 	}
 }

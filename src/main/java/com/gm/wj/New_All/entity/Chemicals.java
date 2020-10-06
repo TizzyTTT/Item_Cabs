@@ -3,6 +3,7 @@ package com.gm.wj.New_All.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.gm.wj.entity.Organization;
 
 /**
  * @Description
@@ -14,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
 @Table ( name ="chemicals")
 public class Chemicals  implements Serializable {
-
-	private static final long serialVersionUID =  4922048159321233952L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

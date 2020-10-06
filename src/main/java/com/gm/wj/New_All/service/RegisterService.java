@@ -1,13 +1,19 @@
 package com.gm.wj.New_All.service;
 
-import com.gm.wj.New_All.dao.RegisterDAO;
+import com.gm.wj.New_All.dao.record.RegisterDAO;
 import com.gm.wj.New_All.entity.Chemicals;
+import com.gm.wj.New_All.utils.Chem;
 import com.gm.wj.New_All.utils.Option;
 import com.gm.wj.New_All.entity.Register;
+import com.gm.wj.entity.Organization;
+import com.gm.wj.service.UserService;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -19,9 +25,15 @@ public class RegisterService {
     @Autowired
     ChemicalBasicService chemicalBasicService;
 
+    @Autowired
+    UserService userService;
+
     public List<Register> List(){
-        System.out.println("register enter List");
-        return registerDAO.findAll();
+        List<Register> list = registerDAO.findAll();
+        String t_name = SecurityUtils.getSubject().getPrincipal().toString();
+        Organization org = userService.findByUsername(t_name).getOrganization();
+        list.removeIf(m -> m.getChemicals().getChemicalcategory().getOrganization().getId() != org.getId());
+        return list;
     }
 
     public int add(Register register){
@@ -87,6 +99,26 @@ public class RegisterService {
         return registerDAO.findByChemicalsIn(list);
     }
 
+    @Transactional
+    public void addBatch(List<Chem>list){
+        List<Register> list1 = new ArrayList<>();
+        for(Chem chem :list){
+            Chemicals chemicals = chemicalBasicService.findById(chem.getChemicalid());
+            Register register = registerDAO.findByChemicals(chemicals);
+            if(register == null){
+                register = new Register();
+                register.setChemicals(chemicals);
+                register.setTotalweight(chem.getAmount());
+            }else {
+                register.setTotalweight(register.getTotalweight()+chem.getAmount());
+            }
+            register.setRegDate(new Date());
+            System.out.println(register.toString());
+
+            list1.add(register);
+        }
+        registerDAO.saveAll(list1);
+    }
 //    public List<Register> search(Chemicalcategory chemicalcategory, String keywords){
 //
 //        keywords = "%"+keywords+"%";

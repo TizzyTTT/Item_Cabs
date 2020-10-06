@@ -39,6 +39,16 @@ public class AdminMenu {
      */
     private String nameZh;
 
+    @Override
+    public String toString() {
+        return "AdminMenu{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", nameZh='" + nameZh + '\'' +
+                ", parentId=" + parentId +
+                '}';
+    }
+
     /**
      * Menu icon class(use element-ui icons).
      */
@@ -48,6 +58,70 @@ public class AdminMenu {
      * Front-end component name corresponding to menu.
      */
     private String component;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getNameZh() {
+        return nameZh;
+    }
+
+    public void setNameZh(String nameZh) {
+        this.nameZh = nameZh;
+    }
+
+    public String getIconCls() {
+        return iconCls;
+    }
+
+    public void setIconCls(String iconCls) {
+        this.iconCls = iconCls;
+    }
+
+    public String getComponent() {
+        return component;
+    }
+
+    public void setComponent(String component) {
+        this.component = component;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
+    }
+
+    public List<AdminMenu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<AdminMenu> children) {
+        this.children = children;
+    }
 
     /**
      * Parent menu.

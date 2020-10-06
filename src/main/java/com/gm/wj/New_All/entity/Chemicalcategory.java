@@ -3,6 +3,7 @@ package com.gm.wj.New_All.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.gm.wj.entity.Organization;
 
 /**
  * @Description
@@ -25,6 +26,10 @@ public class Chemicalcategory  implements Serializable {
    	@Column(name = "cname" )
 	private String cname;
 
+	@OneToOne
+	@JoinColumn(name = "orgid")
+	private Organization organization;
+
 	public int getId() {
 		return this.id;
 	}
@@ -39,6 +44,14 @@ public class Chemicalcategory  implements Serializable {
 
 	public void setCname(String cname) {
 		this.cname = cname;
+	}
+
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
 	}
 
 	@Override

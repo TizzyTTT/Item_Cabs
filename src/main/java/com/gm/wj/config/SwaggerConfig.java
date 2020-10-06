@@ -25,7 +25,7 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .select()
                 // 指定要生成api接口的包路径
-                .apis(RequestHandlerSelectors.basePackage("com.gm.wj.New_All.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.gm.wj.New_All"))
                 //使用了 @ApiOperation 注解的方法生成api接口文档
                 //.apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())

@@ -3,99 +3,76 @@ package com.gm.wj.New_All.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
- * @Description  
+ * @Description
  * @Author  wwhh
- * @Date 2020-07-29 21:34:44 
+ * @Date 2020-07-29 21:34:44
  */
-
+@Data
 @Entity
 @JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
 @Table ( name ="chemicalsregister")
-public class Chemicalsregister  implements Serializable {
-
-	private static final long serialVersionUID =  4109995474530696637L;
-
+public class Chemicalsregister{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
    	@Column(name = "id" )
 	private int id;
 
-   	@Column(name = "chemicalno" )
-	private String chemicalno;
-
-   	@Column(name = "chemicalname" )
-	private String chemicalname;
-
    	@Column(name = "totalweight" )
-	private BigDecimal totalweight;
+	private double totalweight;
 
    	@Column(name = "inweight" )
-	private BigDecimal inweight;
+	private double inweight;
 
-   	@Column(name = "chemicalid" )
-	private int chemicalid;
+	@OneToOne
+	@JoinColumn(name = "chemicalid")
+	private Chemicals chemicals;
+
+	@Column(name = "reg_date")
+	private Date date;
 
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public String getChemicalno() {
-		return this.chemicalno;
+	public double getTotalweight() {
+		return totalweight;
 	}
 
-	public void setChemicalno(String chemicalno) {
-		this.chemicalno = chemicalno;
-	}
-
-	public String getChemicalname() {
-		return this.chemicalname;
-	}
-
-	public void setChemicalname(String chemicalname) {
-		this.chemicalname = chemicalname;
-	}
-
-	public BigDecimal getTotalweight() {
-		return this.totalweight;
-	}
-
-	public void setTotalweight(BigDecimal totalweight) {
+	public void setTotalweight(double totalweight) {
 		this.totalweight = totalweight;
 	}
 
-	public BigDecimal getInweight() {
-		return this.inweight;
+	public double getInweight() {
+		return inweight;
 	}
 
-	public void setInweight(BigDecimal inweight) {
+	public void setInweight(double inweight) {
 		this.inweight = inweight;
 	}
 
-	public int getChemicalid() {
-		return this.chemicalid;
+	public Chemicals getChemicals() {
+		return chemicals;
 	}
 
-	public void setChemicalid(int chemicalid) {
-		this.chemicalid = chemicalid;
+	public void setChemicals(Chemicals chemicals) {
+		this.chemicals = chemicals;
 	}
 
-	@Override
-	public String toString() {
-		return "{" +
-					"id='" + id + '\'' +
-					"chemicalno='" + chemicalno + '\'' +
-					"chemicalname='" + chemicalname + '\'' +
-					"totalweight='" + totalweight + '\'' +
-					"inweight='" + inweight + '\'' +
-					"chemicalid='" + chemicalid + '\'' +
-				'}';
+	public Date getDate() {
+		return date;
 	}
 
+	public void setDate(Date date) {
+		this.date = date;
+	}
 }

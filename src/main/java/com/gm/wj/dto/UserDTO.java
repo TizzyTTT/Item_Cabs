@@ -2,6 +2,7 @@ package com.gm.wj.dto;
 
 import com.gm.wj.dto.base.OutputConverter;
 import com.gm.wj.entity.AdminRole;
+import com.gm.wj.entity.Organization;
 import com.gm.wj.entity.User;
 import lombok.Data;
 import lombok.ToString;
@@ -74,6 +75,14 @@ public class UserDTO implements OutputConverter<UserDTO, User> {
         this.roles = roles;
     }
 
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
     private String username;
 
     private String name;
@@ -85,5 +94,7 @@ public class UserDTO implements OutputConverter<UserDTO, User> {
     private boolean enabled;
 
     private List<AdminRole> roles;
+
+    private Organization organization;
 
 }

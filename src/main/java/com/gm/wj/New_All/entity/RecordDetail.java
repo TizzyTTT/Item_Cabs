@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 
 @Entity
 @JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
-@Table ( name ="record_detail")
+@Table ( name ="ordinaryrecord_detail")
 public class RecordDetail  implements Serializable {
 
 	private static final long serialVersionUID =  3827896852141656103L;
@@ -23,17 +23,19 @@ public class RecordDetail  implements Serializable {
    	@Column(name = "id" )
 	private int id;
 
-   	@Column(name = "recordid" )
-	private int recordid;
+	@OneToOne
+	@JoinColumn(name = "recordid" )
+	private Record record;
 
-   	@ManyToOne
+	@OneToOne
    	@JoinColumn(name = "chemicalid" )
 	private Chemicals chemicals;
 
-   	@Column(name = "optype" )
-	private int optype;
+	@OneToOne
+	@JoinColumn(name = "optype" )
+	private OperationType optype;
 
-   	@Column(name = "account" )
+	@Column(name = "account" )
 	private double account;
 
 	public int getId() {
@@ -44,14 +46,6 @@ public class RecordDetail  implements Serializable {
 		this.id = id;
 	}
 
-	public int getRecordid() {
-		return this.recordid;
-	}
-
-	public void setRecordid(int recordid) {
-		this.recordid = recordid;
-	}
-
 	public Chemicals getChemicals() {
 		return chemicals;
 	}
@@ -60,12 +54,11 @@ public class RecordDetail  implements Serializable {
 		this.chemicals = chemicals;
 	}
 
-
-	public int getOptype() {
-		return this.optype;
+	public OperationType getOptype() {
+		return optype;
 	}
 
-	public void setOptype(int optype) {
+	public void setOptype(OperationType optype) {
 		this.optype = optype;
 	}
 
@@ -77,15 +70,12 @@ public class RecordDetail  implements Serializable {
 		this.account = account;
 	}
 
-	@Override
-	public String toString() {
-		return "RecordDetail{" +
-				"id=" + id +
-				", recordid=" + recordid +
-				", chemicals=" + chemicals +
-				", optype=" + optype +
-				", account=" + account +
-				'}';
+	public Record getRecord() {
+		return record;
+	}
+
+	public void setRecord(Record record) {
+		this.record = record;
 	}
 
 }
